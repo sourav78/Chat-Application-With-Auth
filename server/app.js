@@ -1,22 +1,22 @@
-// import dotenv from 'dotenv'
 require('dotenv').config()
-// dotenv.config()
-// import express from 'express'
 const express = require('express')
 
-// import connectDb from './config/db'
 const connectDb = require('./config/db')
-// import connectDb from './databse'
+const userRouter = require('./routes/user.routes')
 
 
 const app = express()
 
+app.use(express.json())
+
 connectDb()
 
 
-app.get("/", (req, res) => {
-    res.send("Hello world")
-})
+// app.get("/", (req, res) => {
+//     res.send("Hello world")
+// })
+
+app.use("/user", userRouter)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started: http://localhost:${process.env.PORT}`);
