@@ -1,5 +1,7 @@
 
 const validateEmail = require('email-validator')
+const bcrypt = require('bcrypt')
+
 const userModel = require('../models/user.models')
 
 const register = async (req, res) => {
@@ -41,7 +43,48 @@ const register = async (req, res) => {
 
 }
 
-const login = (req, res) => {
+const login = async (req, res) => {
+    const { email, password } = req.body
+
+    if(!email || !password){
+        return res.status(400).json({
+            success: false,
+            msg: "All fields are required"
+        })
+    }
+
+    try {
+        const user = await userModel.findOne({email})
+
+        const encodedPassword = await bcrypt.compare(password, user.password)
+        if(!encodedPassword){
+            return res.status(400).json({
+                success: false,
+                msg: "Invalid/wrong password"
+            })
+        }
+
+        const token = user.jwtToken()
+
+        const cookieOption = {
+            httpOnly: true,
+            expires: new Date(Date.now() + 15 * 60 * 1000)
+        }
+
+        res.cookie('token', token, cookieOption)
+
+
+        return res.status(200).json({
+            success: true,
+            msg: user
+        })
+
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            msg: "Invalid email address"
+        })
+    }
 
 }
 
