@@ -1,10 +1,11 @@
 const { Router } = require('express')
 const { register, login, userChats } = require('../controller/user.controller')
+const verifyToken = require('../middleware/jwtAuth.middleware')
 
 const router = Router()
 
-router.post("/signup", register)
-router.post("/signin", login)
-router.post("/user-chats", userChats)
+router.get("/", verifyToken, userChats)
+router.post("/user/signup", register)
+router.post("/user/signin", login)
 
 module.exports = router

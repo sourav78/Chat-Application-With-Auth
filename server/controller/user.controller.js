@@ -67,11 +67,11 @@ const login = async (req, res) => {
         const token = user.jwtToken()
 
         const cookieOption = {
-            httpOnly: true,
-            expires: new Date(Date.now() + 15 * 60 * 1000)
+            maxAge: 24 * 60 * 60 * 1000,
+            httpOnly: true
         }
 
-        res.cookie('token', token, cookieOption)
+        res.cookie("token", token, cookieOption)
 
 
         return res.status(200).json({
@@ -89,7 +89,23 @@ const login = async (req, res) => {
 }
 
 const userChats = (req, res) => {
+    const { _id, userName, email } = req.user
 
+    if(!userName || !email){
+        return res.status(400).json({
+            success: false,
+            msg: "Not authorize"
+        })
+    }
+
+    return res.status(200).json({
+        success: true,
+        msg: {
+            _id,
+            userName,
+            email
+        }
+    })
 }
 
 module.exports = {
