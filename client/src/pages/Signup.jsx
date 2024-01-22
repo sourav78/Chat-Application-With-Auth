@@ -13,7 +13,7 @@ const Signup = () => {
         e.preventDefault()
 
         try {
-            const response = await axios.post("http://localhost:3000/user/signup", {
+            const response = await axios.post("/api/user/signup", {
                 userName: userName,
                 email: email,
                 password: password
@@ -30,7 +30,7 @@ const Signup = () => {
 
             console.log(data);
         } catch (error) {
-            console.log(error.message);
+            console.log(error.response.data);
         }
     }
 
