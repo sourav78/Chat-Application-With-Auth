@@ -20,7 +20,7 @@ const Home = () => {
                     console.log("Login first");
                 }
                 // console.log(response);
-                // console.log(data);
+                console.log(data);
                 if(!data.success){
                     navigate('/signin')
                 }
