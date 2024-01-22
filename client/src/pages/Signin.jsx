@@ -2,14 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import reactSvg from '../assets/react.svg'
 import axios from 'axios'
+import { message } from 'antd';
 
 const Signin = () => {
 
     const navigate = useNavigate()
 
+    const [messageApi, contextHolder] = message.useMessage();
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isAuthorized, setIsAuthorized] = useState(false)
+
+    const success = (content) => {
+        messageApi.open({
+            type: 'success',
+            content: content,
+        });
+    };
+    const errors = (content) => {
+        messageApi.open({
+            type: 'error',
+            content: content,
+        });
+    };
+
+    
 
     useEffect(() => {
         console.log(isAuthorized);
@@ -39,6 +57,7 @@ const Signin = () => {
             console.log(data);
         } catch (error) {
             console.log(error.response.data);
+            errors(error.response.data.msg)
             setIsAuthorized(false)
         }
 
@@ -46,6 +65,7 @@ const Signin = () => {
 
     return (
         <>
+        {contextHolder}
             <div className='flex justify-center items-center h-screen'>
                 <div className="w-full max-w-md mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
                     <div className="px-6 py-4">
