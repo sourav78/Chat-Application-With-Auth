@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
 
     const navigate = useNavigate()
+
+    
 
     useEffect(() => {
 
@@ -19,9 +21,11 @@ const Home = () => {
                 if (response.status !== 200) {
                     console.log("Login first");
                 }
+
                 // console.log(response);
-                console.log(data);
-                if(!data.success){
+                // console.log(data);
+
+                if (!data.success) {
                     navigate('/signin')
                 }
             } catch (error) {
@@ -31,11 +35,19 @@ const Home = () => {
         }
 
         fetchData()
+
+        return () => {
+            socket.disconnect()
+        }
+        
     })
+    
 
     return (
         <>
-
+            <div>
+                
+            </div>
         </>
     )
 }
