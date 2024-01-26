@@ -38,7 +38,7 @@ const Signin = () => {
         e.preventDefault()
 
         try {
-            const response = await axios.post("/api/user/signin", {
+            const response = await axios.post("http://localhost:3000/user/signin", {
                 email,
                 password
             },

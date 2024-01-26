@@ -108,8 +108,13 @@ const userChats = (req, res) => {
     })
 }
 
+const forgotPassword = () => {
+
+}
+
 module.exports = {
     register,
     login,
-    userChats
+    userChats,
+    forgotPassword
 }
