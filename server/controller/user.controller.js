@@ -73,7 +73,6 @@ const login = async (req, res) => {
 
         res.cookie("token", token, cookieOption)
 
-
         return res.status(200).json({
             success: true,
             msg: user
@@ -108,6 +107,28 @@ const userChats = (req, res) => {
     })
 }
 
+const logout = (req, res) => {
+    const { _id, userName, email } = req.user
+    try {
+        
+        res.clearCookie('token');
+        return res.status(200).json({
+            success: true,
+            msg: "Logged out successfully",
+            lol: {
+                _id,
+                userName
+            }
+        })
+
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            msg: error.message
+        })
+    }
+}
+
 const forgotPassword = () => {
 
 }
@@ -116,5 +137,6 @@ module.exports = {
     register,
     login,
     userChats,
-    forgotPassword
+    forgotPassword,
+    logout
 }
