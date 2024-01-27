@@ -67,8 +67,7 @@ const login = async (req, res) => {
         const token = user.jwtToken()
 
         const cookieOption = {
-            maxAge: 24 * 60 * 60 * 1000,
-            httpOnly: true
+            maxAge: 24 * 60 * 60 * 1000
         }
 
         res.cookie("token", token, cookieOption)
@@ -108,17 +107,12 @@ const userChats = (req, res) => {
 }
 
 const logout = (req, res) => {
-    const { _id, userName, email } = req.user
     try {
         
-        res.clearCookie('token');
+        res.cookie('token', null);
         return res.status(200).json({
             success: true,
             msg: "Logged out successfully",
-            lol: {
-                _id,
-                userName
-            }
         })
 
     } catch (error) {

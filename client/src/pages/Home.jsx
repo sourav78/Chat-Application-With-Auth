@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import removeCookie from '../hooks/removeCookie'
 
 const Home = () => {
 
@@ -10,15 +11,9 @@ const Home = () => {
     const [logout, setLogout] = useState(false)
 
     const handleLogout = async () => {
-        try {
-            const response = await axios.get("http://localhost:3000/logout")
-            const data = response
-            setLogout(data.success)
-            console.log(data);
-        } catch (error) {
-            setLogout(false)
-            console.log(error);
-        }
+        console.log("jj");
+        removeCookie('token')
+        setLogout(prev => !prev)
     }
 
     useEffect(() => {
@@ -35,13 +30,11 @@ const Home = () => {
                 if (response.status !== 200) {
                     console.log("Login first");
                 }
-                // console.log(userData);
 
             } catch (error) {
                 console.log(error.response.data);
                 navigate('/signin')
             }
-            // console.log(userData);
         }
 
         fetchData()
