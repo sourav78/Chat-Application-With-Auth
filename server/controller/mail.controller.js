@@ -1,4 +1,5 @@
-const nodeMailer = require('nodemailer')
+const nodeMailer = require('nodemailer');
+const generateOTP = require('../utils/generateOtp.utils');
 
 const sendEmail = async (req, res) => {
     const transporter = await nodeMailer.createTransport({
@@ -14,8 +15,9 @@ const sendEmail = async (req, res) => {
     const mailOptions = {
         from: '"Sourav" <souravsahoo7848@gmail.com>',
         to: "souravranjan488@gmail.com",
+        // to: "souravranjan488@gmail.com, chandanhans2003@gmail.com, subratsahoobulu8480@gmail.com, kumargiripramod9@gmail.com",
         subject: "OTP Verification",
-        text: "your OTP: MGH",
+        text: `your OTP: ${generateOTP()}`,
         replyTo: 'no-reply@example.com',
     };
 
