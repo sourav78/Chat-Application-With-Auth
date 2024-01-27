@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
 import reactSvg from '../assets/react.svg'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { message } from 'antd';
 
-const Signin = () => {
+const ForgotPassword = () => {
 
     const navigate = useNavigate()
 
@@ -12,14 +12,9 @@ const Signin = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [isAuthorized, setIsAuthorized] = useState(false)
+    const [confirmPassword, setConfirmPassword] = useState('')
 
-    const success = (content) => {
-        messageApi.open({
-            type: 'success',
-            content: content,
-        });
-    };
+    
     const errors = (content) => {
         messageApi.open({
             type: 'error',
@@ -27,20 +22,15 @@ const Signin = () => {
         });
     };
 
-    
-
-    useEffect(() => {
-        console.log(isAuthorized);
-        isAuthorized && navigate('/') 
-    }, [isAuthorized])
-
-    const onHandleLogin = async (e) => {
+    const handleReseltPasssword = async (e) => {
         e.preventDefault()
 
         try {
-            const response = await axios.post("http://localhost:3000/user/signin", {
+
+            const response = await axios.post("http://localhost:3000/user/forgot-password", {
                 email,
-                password
+                password,
+                confirmPassword
             },
                 {
                     headers: {
@@ -50,17 +40,15 @@ const Signin = () => {
                 }
             )
 
-            const data = await response.data
+            const result = await response.data
 
-            data.success && setIsAuthorized(true)
+            console.log(result);
+            result.success && navigate("/signin")
 
-            console.log(data);
         } catch (error) {
-            console.log(error.response.data);
+            console.log(error);
             errors(error.response.data.msg)
-            setIsAuthorized(false)
         }
-
     }
 
     return (
@@ -77,7 +65,7 @@ const Signin = () => {
 
                         <p className="mt-1 text-center text-gray-500 dark:text-gray-400">Login or create account</p>
 
-                        <form onSubmit={onHandleLogin}>
+                        <form onSubmit={handleReseltPasssword}>
                             <div className="w-full mt-4">
                                 <input
                                     value={email}
@@ -91,21 +79,24 @@ const Signin = () => {
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="block w-full px-4 py-2 mt-2 text-white placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="password" placeholder="Password" aria-label="Password" />
                             </div>
+                            <div className="w-full mt-4">
+                                <input
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    className="block w-full px-4 py-2 mt-2 text-white placeholder-gray-500 bg-white border rounded-lg dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-opacity-40 focus:outline-none focus:ring focus:ring-blue-300" type="password" placeholder="Confirm Password" aria-label="Confirm Password" />
+                            </div>
 
                             <div className="flex items-center justify-between mt-4">
-                                <Link to='/forgot' className="text-sm text-gray-600 dark:text-gray-200 hover:text-gray-500" >Forget Password?</Link>
 
-                                <button className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
-                                    Sign In
+                                <button
+                                    className="px-6 py-2 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                                    type='submit'
+                                >
+
+                                    Reset
                                 </button>
                             </div>
                         </form>
-                    </div>
-
-                    <div className="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
-                        <span className="text-sm text-gray-600 dark:text-gray-200">Don't have an account? </span>
-
-                        <Link to="/signup"><p className="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline">Register</p></Link>
                     </div>
                 </div>
             </div>
@@ -113,4 +104,4 @@ const Signin = () => {
     )
 }
 
-export default Signin
+export default ForgotPassword

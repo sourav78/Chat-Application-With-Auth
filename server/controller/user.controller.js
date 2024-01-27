@@ -1,4 +1,3 @@
-
 const validateEmail = require('email-validator')
 const bcrypt = require('bcrypt')
 
@@ -123,7 +122,42 @@ const logout = (req, res) => {
     }
 }
 
-const forgotPassword = () => {
+const forgotPassword = async (req, res) => {
+
+    const { email, password, confirmPassword } = req.body
+
+    if(!email, !password, !confirmPassword) {
+        return res.status(400).json({
+            success: false,
+            msg: "All fields are required"
+        })
+    }
+
+    if(password !== confirmPassword){
+        return res.status(400).json({
+            success: false,
+            msg: "Password and conform password should be same"
+        })
+    }
+
+    try {
+
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        const result = await userModel.findOneAndUpdate({email}, {
+            password: hashedPassword
+        })
+
+        return res.status(200).json({
+            success: true,
+            msg: result
+        })
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            msg: error.message
+        })
+    }
 
 }
 
