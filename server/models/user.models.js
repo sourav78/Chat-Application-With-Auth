@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     profileUrl: {
         type: String,
-        default: "https://media.istockphoto.com/id/1452776340/photo/senior-hispanic-couple-kayaking.jpg?b=1&s=612x612&w=0&k=20&c=Ja5Q6jsXnISd8KBICUoV5I4tErhxR6GxPsADlMPSjdQ="
+        default: "https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png"
     }
 }, { timestamps: true})
 
