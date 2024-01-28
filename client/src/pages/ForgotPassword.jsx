@@ -41,12 +41,9 @@ const ForgotPassword = () => {
             )
 
             const result = await response.data
-
-            console.log(result);
             result.success && navigate("/signin")
 
         } catch (error) {
-            console.log(error);
             errors(error.response.data.msg)
         }
     }

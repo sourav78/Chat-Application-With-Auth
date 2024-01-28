@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    profileUrl: {
+        type: String,
+        default: "https://media.istockphoto.com/id/1452776340/photo/senior-hispanic-couple-kayaking.jpg?b=1&s=612x612&w=0&k=20&c=Ja5Q6jsXnISd8KBICUoV5I4tErhxR6GxPsADlMPSjdQ="
     }
 }, { timestamps: true})
 
@@ -33,8 +37,7 @@ userSchema.pre('save', async function(next){
 userSchema.methods.jwtToken = function(){
     payload = {
         _id: this._id,
-        userName: this.userName,
-        email: this.email
+        email: this.email,
     }
 
     const token = JWT.sign(payload, process.env.JWT_SECRET)

@@ -30,7 +30,6 @@ const Signin = () => {
     
 
     useEffect(() => {
-        console.log(isAuthorized);
         isAuthorized && navigate('/') 
     }, [isAuthorized])
 
@@ -54,10 +53,7 @@ const Signin = () => {
 
             data.success && setIsAuthorized(true)
 
-            console.log(data);
         } catch (error) {
-            console.log(error.response.data);
-            errors(error.response.data.msg)
             setIsAuthorized(false)
         }
 

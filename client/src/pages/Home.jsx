@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import removeCookie from '../hooks/removeCookie'
+import { Modal, message } from 'antd';
 
 const Home = () => {
 
@@ -10,11 +11,89 @@ const Home = () => {
     const [userData, setUserData] = useState({})
     const [logout, setLogout] = useState(false)
 
+    const [file, setFile] = useState(null)
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Image uploaded successfully',
+        });
+    };
+    const error = () => {
+        messageApi.open({
+            type: 'error',
+            content: 'Image not uploaded',
+        });
+    };
+    const warning = () => {
+        messageApi.open({
+            type: 'warning',
+            content: 'No image has been chosen. Please choose an image',
+        });
+    };
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0])
+    }
+
     const handleLogout = async () => {
         console.log("jj");
         removeCookie('token')
         setLogout(prev => !prev)
     }
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+
+    const handleOk = async () => {
+
+        setConfirmLoading(true);
+
+        if (file === null) {
+            
+            warning()
+            return
+        }
+
+        const formData = new FormData()
+        formData.append('uploadImage', file)
+        formData.append('_id', userData.msg._id)
+
+        try {
+            const response = await axios.post("http://localhost:3000/profile/upload", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+            console.log(response);
+
+            if (response.data.success === true) {
+                success()
+                setConfirmLoading(false);
+                setLogout(prev => !prev)
+            } else {
+                error()
+            }
+
+
+        } catch (error) {
+            console.error("Error is", error);
+        }
+
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     useEffect(() => {
 
@@ -44,18 +123,44 @@ const Home = () => {
 
     return (
         <>
+        {contextHolder}
             <div className='flex justify-center items-center h-screen'>
                 {userData.success ? (
                     <div className="border-4 p-3 rounded-lg border-sky-400 min-w-80">
 
-                        <div className="w-28 h-28 border-2 rounded-full m-auto"></div>
-                        <div className="mt-3">
-                            <h3 className='text-xl'>{userData.msg.userName}</h3>
-                            <h3 className='text-xl'>{userData.msg.email}</h3>
+                        <div className="w-28 h-28 border-2 rounded-full m-auto flex justify-center overflow-hidden items-center">
+                            <img className='w-full object-fill' src={userData.msg.profileUrl} alt="" />
                         </div>
-                        <button
-                            onClick={handleLogout}
-                            className='px-3 py-1 bg-red-600 rounded-md text-xl mt-4'>Logout</button>
+                        <div className="mt-5">
+                            <h3 className='text-lg'>ID: {userData.msg._id}</h3>
+                            <h3 className='text-xl'>UName: {userData.msg.userName}</h3>
+                            <h3 className='text-xl'>Email: {userData.msg.email}</h3>
+                        </div>
+                        <div className=" flex justify-between mt-5">
+                            <button
+                                onClick={handleLogout}
+                                className='px-3 py-1 bg-red-600 rounded-md text-xl mt-4'>Logout</button>
+
+                            <button
+                                onClick={showModal}
+                                className='px-3 py-1 bg-sky-400 rounded-md text-xl mt-4'>Profile</button>
+
+                            <Modal 
+                                title="Upload Profile Picture" 
+                                open={isModalOpen} 
+                                onOk={handleOk} 
+                                onCancel={handleCancel} 
+                                confirmLoading={confirmLoading}>
+                                <form encType="multipart/form-data">
+                                    <input
+                                        className="block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                        id="large_size"
+                                        type="file"
+                                        name='uploadImage'
+                                        onChange={handleFileChange} />
+                                </form>
+                            </Modal>
+                        </div>
 
                     </div>
                 ) : (

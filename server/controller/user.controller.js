@@ -85,23 +85,21 @@ const login = async (req, res) => {
 
 }
 
-const userChats = (req, res) => {
-    const { _id, userName, email } = req.user
+const userChats = async (req, res) => {
+    const { _id, email } = req.user
 
-    if(!userName || !email){
+    if(!_id || !email){
         return res.status(400).json({
             success: false,
             msg: "Not authorize"
         })
     }
 
+    const user = await userModel.findById(_id)
+
     return res.status(200).json({
         success: true,
-        msg: {
-            _id,
-            userName,
-            email
-        }
+        msg: user
     })
 }
 
