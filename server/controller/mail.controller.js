@@ -7,13 +7,13 @@ const sendEmail = async (req, res) => {
         host: 'smtp.gmail.com',
         port: 587,
         auth: {
-            user: 'souravsahoo7848@gmail.com',
-            pass: 'hpma uico sdrx qtrd'
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
         }
     });
 
     const mailOptions = {
-        from: '"Sourav" <souravsahoo7848@gmail.com>',
+        from: '"Sourav" <no-reply@example.com>',
         to: "souravranjan488@gmail.com",
         // to: "souravranjan488@gmail.com, chandanhans2003@gmail.com, subratsahoobulu8480@gmail.com, kumargiripramod9@gmail.com",
         subject: "OTP Verification",

@@ -10,6 +10,8 @@ router.get("/logout", logout)
 
 router.get("/send-email", sendEmail)
 
+router.post("/profile/upload")
+
 router.post("/user/signup", register)
 router.post("/user/signin", login)
 router.post("/user/forgot-password", forgotPassword)
