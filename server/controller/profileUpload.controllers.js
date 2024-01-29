@@ -7,7 +7,7 @@ const uploadProfilePicture = async (req, res) => {
 
     const result = await uploadOnCloudynary(`./public/profiles/${req.file.filename}`, _id)
 
-    // https://res.cloudinary.com/sourav78/image/upload/v1706409814/chat-profile/8387292xh1y83.png
+    // https://res.cloudinary.com/sourav78/image/upload/v1706409814/chat-profile/8387292xh1y83.png--
 
     if (result === null) {
         return res.status(200).json({
