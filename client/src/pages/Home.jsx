@@ -3,9 +3,11 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import removeCookie from '../hooks/removeCookie'
 import { Modal, message } from 'antd';
-import { UserDetailsContext } from '../App';
+import noteContext from '../context/NoteContext';
 
 const Home = () => {
+
+    const { state, updateState } = useContext(noteContext)
 
 
     const navigate = useNavigate()
@@ -106,8 +108,10 @@ const Home = () => {
                 })
 
                 const data = await response.data
-                console.log(data);
+                // console.log(data);
                 setUserData(data)
+                updateState(data.msg)
+                console.log(state);
                 if (response.status !== 200) {
                     console.log("Login first");
                 }
@@ -163,13 +167,15 @@ const Home = () => {
                                             onChange={handleFileChange} />
                                     </form>
                                 </Modal>
+
+                                <Link className='px-3 py-1 border-white border-2 rounded-md text-xl mt-4' to='/details'>
+                                    context
+                                </Link>
                             </div>
 
                         </div>
 
-                        <Link to='/details'>
-                            julu
-                        </Link>
+
 
                     </>
                 ) : (

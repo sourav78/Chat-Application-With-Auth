@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
+import noteContext from '../context/NoteContext'
 
 const Details = () => {
 
-    console.log(userDeatils);
+    const {state} = useContext(noteContext)
+
 
     return (
 
         <>
-        {/* {userDeatils && <div>{userDeatils.profileUrl}</div>} */}
-        
+        {state && <div>{state.userName}</div>}
+        {/* {a.name} */}
         </>
     )
 }

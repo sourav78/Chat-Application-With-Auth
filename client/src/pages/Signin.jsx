@@ -55,6 +55,8 @@ const Signin = () => {
 
         } catch (error) {
             setIsAuthorized(false)
+            // console.log(error.response.data.msg);
+            errors(error.response.data.msg)
         }
 
     }
